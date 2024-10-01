@@ -8,7 +8,7 @@ import { comma } from '../helpers'
 
 // No need to memoize this component as it's already memoized by Redux's useSelector
 const PreviewConfiguredProduct = () => {
-    const {baseModel, cpu, ram, storage, gpu, cooling, display, accessories, software} = useSelector((state: RootState) => state.configuration)
+    const {baseModel, cpu, ram, storage, gpu, cooling, display, accessories, software} = useSelector((state: RootState) => state.configuration.present)
     const [baseFee, accessoriesFee, baseFeeWithAccessories, accessoriesDiscount, amountDue, softwareFee] = usePriceCalculator()
 
     // Memoize the derived state to prevent recalculations on every render

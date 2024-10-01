@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-native-paper'
 import { RootState } from '../core/store'
 import { comma } from '../helpers'
+import BackNext from '../components/BackNext'
 
 interface StorageOptionInterface {
     value: ConfigurationStateInterface['storage']
@@ -20,7 +21,7 @@ const StorageGpu = ({
     goToNextStep: () => void
 }) => {
     const dispatch = useDispatch()
-    const {storage, gpu} = useSelector((state: RootState) => state.configuration)
+    const {storage, gpu} = useSelector((state: RootState) => state.configuration.present)
     const gpuOptions: ConfigurationStateInterface['gpu'][] = ['Integrated', 'RTX 3060', 'RTX 3070', 'RTX 3080']
 
     const storageOptions = useMemo<StorageOptionInterface[]>(() => ([
@@ -76,7 +77,7 @@ const StorageGpu = ({
         <View
             style={styles.container}
         >
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, padding: 20}}>
                 <ScrollView
                     contentContainerStyle={{paddingBottom: 20}}
                     showsVerticalScrollIndicator={false}
@@ -148,25 +149,10 @@ const StorageGpu = ({
                 </ScrollView>
             </View>
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}
-            >
-                <Button
-                    onPress={goToPreviousStep}
-                    mode={'outlined'}
-                >
-                    Back
-                </Button>
-                <Button
-                    onPress={nextPressed}
-                    mode={'contained'}
-                >
-                    Next
-                </Button>
-            </View>
+            <BackNext
+                goToPreviousStep={goToPreviousStep}
+                nextPressed={nextPressed}
+            />
         </View>
     )
 }
@@ -174,7 +160,7 @@ const StorageGpu = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        // padding: 20
     },
     pageHeaderText: {
         fontSize: 20,

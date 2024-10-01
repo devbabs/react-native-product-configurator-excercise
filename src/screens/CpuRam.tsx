@@ -5,6 +5,7 @@ import { ConfigurationStateInterface, setBaseModel, setCpu, setRam } from '../co
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-native-paper'
 import { RootState } from '../core/store'
+import BackNext from '../components/BackNext'
 
 interface RamOptionInterface {
     value: ConfigurationStateInterface['ram']
@@ -19,7 +20,7 @@ const CpuRam = ({
     goToNextStep: () => void
 }) => {
     const dispatch = useDispatch()
-    const {cpu, ram, baseModel} = useSelector((state: RootState) => state.configuration)
+    const {cpu, ram, baseModel} = useSelector((state: RootState) => state.configuration.present)
     const cpuOptions: ConfigurationStateInterface['cpu'][] = ['i5', 'i7', 'i9']
     
     // Memoize ramOptions to prevent recalculation on every render
@@ -89,7 +90,7 @@ const CpuRam = ({
         <View
             style={styles.container}
         >
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, padding: 20}}>
                 <ScrollView
                     contentContainerStyle={{paddingBottom: 20}}
                     showsVerticalScrollIndicator={false}
@@ -161,25 +162,10 @@ const CpuRam = ({
                 </ScrollView>
             </View>
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}
-            >
-                <Button
-                    onPress={goToPreviousStep}
-                    mode={'outlined'}
-                >
-                    Back
-                </Button>
-                <Button
-                    onPress={nextPressed}
-                    mode={'contained'}
-                >
-                    Next
-                </Button>
-            </View>
+            <BackNext
+                goToPreviousStep={goToPreviousStep}
+                nextPressed={nextPressed}
+            />
         </View>
     )
 }
@@ -187,7 +173,7 @@ const CpuRam = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        // padding: 20
     },
     pageHeaderText: {
         fontSize: 20,

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface ConfigurationStateInterface {
+    activeStep: number
     baseModel: null | 'Starter' | 'Pro' | 'Elite'
     cpu: null | 'i5' | 'i7' | 'i9'
     ram: null | 8 | 16 | 32 | 64
@@ -21,6 +22,7 @@ export interface ConfigurationStateInterface {
 }
 
 const initialState: ConfigurationStateInterface = {
+    activeStep: 0,
     baseModel: null,
     cpu: null,
     ram: null,
@@ -46,6 +48,9 @@ export const {
     name: 'ConfigurationReducer',
     initialState,
     reducers: {
+        setActiveStep: (state, action: PayloadAction<number>) => {
+            state.activeStep = action.payload
+        },
         setBaseModel: (state, action: PayloadAction<ConfigurationStateInterface['baseModel']>) => {
             state.baseModel = action.payload
         },
@@ -97,5 +102,6 @@ export const {
     setMechanicalKeyboard,
     setGamingHeadset,
     setOfficeSuite,
-    setVideoEditingSuite 
+    setVideoEditingSuite ,
+    setActiveStep
 } = actions

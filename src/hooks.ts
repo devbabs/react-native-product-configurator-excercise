@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "./core/store"
 
 export const usePriceCalculator = () => {
-    const {baseModel, cpu, ram, storage, gpu, cooling, display, accessories, software} = useSelector((state: RootState) => state.configuration)
+    const {baseModel, cpu, ram, storage, gpu, cooling, display, accessories, software} = useSelector((state: RootState) => state.configuration.present)
 
     let baseFee = 0
     let accessoriesFee = 0

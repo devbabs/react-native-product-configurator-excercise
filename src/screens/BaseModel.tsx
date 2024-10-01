@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { comma } from '../helpers'
 import { RootState } from '../core/store'
 import { Button } from 'react-native-paper'
+import BackNext from '../components/BackNext'
 
 interface BaseModelOptionInterface {
     label: "Starter" | "Pro" | "Elite"
@@ -20,7 +21,7 @@ const BaseModel = memo(({
     goToNextStep: () => void
 }) => {
     const dispatch = useDispatch()
-    const {baseModel} = useSelector((state: RootState) => state.configuration)
+    const {baseModel} = useSelector((state: RootState) => state.configuration.present)
     // const baseModelOptions: ConfigurationStateInterface['baseModel'][] = ['Starter', 'Pro', 'Elite']
     const availableBaseModelOptions: BaseModelOptionInterface[] = [
         {
@@ -54,7 +55,7 @@ const BaseModel = memo(({
         <View
             style={styles.container}
         >
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, padding: 20}}>
                 <Text style={styles.pageHeaderText}>
                     Choose Your Configuration Model
                 </Text>
@@ -85,15 +86,9 @@ const BaseModel = memo(({
                 }
             </View>
 
-            <View
-            >
-                <Button
-                    onPress={nextPressed}
-                    mode={'contained'}
-                >
-                    Next
-                </Button>
-            </View>
+            <BackNext
+                nextPressed={nextPressed}
+            />
         </View>
     )
 })
@@ -101,7 +96,7 @@ const BaseModel = memo(({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        // padding: 20
     },
     pageHeaderText: {
         fontSize: 20,

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-native-paper'
 import { RootState } from '../core/store'
 import { comma } from '../helpers'
+import BackNext from '../components/BackNext'
 
 interface OptionInterface {
     key: string
@@ -21,7 +22,7 @@ const AccessoriesSoftware = ({
     goToNextStep: () => void
 }) => {
     const dispatch = useDispatch()
-    const {accessories, software} = useSelector((state: RootState) => state.configuration)
+    const {accessories, software} = useSelector((state: RootState) => state.configuration.present)
     const accessoriesOptions: OptionInterface[] = [
         {
             key: 'gamingMouse',
@@ -91,7 +92,7 @@ const AccessoriesSoftware = ({
         <View
             style={styles.container}
         >
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, padding: 20}}>
                 <ScrollView
                     contentContainerStyle={{paddingBottom: 20}}
                     showsVerticalScrollIndicator={false}
@@ -166,25 +167,10 @@ const AccessoriesSoftware = ({
                 </ScrollView>
             </View>
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}
-            >
-                <Button
-                    onPress={goToPreviousStep}
-                    mode={'outlined'}
-                >
-                    Back
-                </Button>
-                <Button
-                    onPress={nextPressed}
-                    mode={'contained'}
-                >
-                    Finish
-                </Button>
-            </View>
+            <BackNext
+                goToPreviousStep={goToPreviousStep}
+                nextPressed={nextPressed}
+            />
         </View>
     )
 }
@@ -192,7 +178,7 @@ const AccessoriesSoftware = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        // padding: 20
     },
     pageHeaderText: {
         fontSize: 20,

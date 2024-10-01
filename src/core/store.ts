@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { ConfigurationReducer } from './configuration/ConfigurationSlice'
+import undoable from 'redux-undo'
 
 export const store = configureStore({
   reducer: {
-    configuration: ConfigurationReducer
+    configuration: undoable(ConfigurationReducer)
   },
 })
 

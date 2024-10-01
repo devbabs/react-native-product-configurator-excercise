@@ -1,7 +1,7 @@
 import { Alert, Animated, SafeAreaView, StyleSheet, View } from 'react-native'
 import React, { useContext, useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { ProductConfiguratorContext } from '../../ProductConfiguratorContext'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../core/store'
 import Text from '../components/Text'
 import Steps from '../components/Steps'
@@ -12,24 +12,27 @@ import StorageGpu from './StorageGpu'
 import DisplayCooling from './DisplayCooling'
 import AccessoriesSoftware from './AccessoriesSoftware'
 import { Button } from 'react-native-paper'
+import UndoRedo from '../components/UndoRedo'
+import { setActiveStep } from '../core/configuration/ConfigurationSlice'
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
+    const dispatch = useDispatch()
     const theme = useContext(ProductConfiguratorContext)
-    const {baseModel} = useSelector((state: RootState) => state.configuration)
+    const {baseModel, activeStep} = useSelector((state: RootState) => state.configuration.present)
     const [displayConfigurationBottomSheet, setDisplayConfigurationBottomSheet] = useState(false)
-    const [activeStep, setActiveStep] = useState(0)
+    // const [activeStep, setActiveStep] = useState(0)
 
     const BaseModelOpacity = useRef(new Animated.Value(0)).current
     const CpuRamOpacity = useRef(new Animated.Value(0)).current
     const StorageGpuOpacity = useRef(new Animated.Value(0)).current
     const DisplayCoolingOpacity = useRef(new Animated.Value(0)).current
     const AccessoriesSoftwareOpacity = useRef(new Animated.Value(0)).current
-
+   
     useEffect(() => {
         if (baseModel !== null) {
             setDisplayConfigurationBottomSheet(true)
         }
-    }, [baseModel])
+    }, [baseModel]) 
 
     // Memoize the hideAllSteps function
     const hideAllSteps = useCallback(() => {
@@ -126,6 +129,8 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                 activeStep={activeStep}
                 totalSteps={5}
             />
+
+            <UndoRedo />
             
             <View style={{flex: 1}}>
                 <Animated.View style={{
@@ -134,8 +139,8 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                     display: activeStep == 0 ? 'flex' : 'none',
                 }}>
                     <BaseModel
-                        // goToPreviousStep={() => setActiveStep(0)}
-                        goToNextStep={() => setActiveStep(1)}
+                        // goToPreviousStep={() => dispatch(setActiveStep(0))}
+                        goToNextStep={() => dispatch(setActiveStep(1))}
                     />
                 </Animated.View>
 
@@ -145,8 +150,8 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                     display: activeStep == 1 ? 'flex' : 'none',
                 }}>
                     <CpuRam
-                        goToPreviousStep={() => setActiveStep(0)}
-                        goToNextStep={() => setActiveStep(2)}
+                        goToPreviousStep={() => dispatch(setActiveStep(0))}
+                        goToNextStep={() => dispatch(setActiveStep(2))}
                     />
                 </Animated.View>
 
@@ -156,8 +161,8 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                     display: activeStep == 2 ? 'flex' : 'none',
                 }}>
                     <StorageGpu
-                        goToPreviousStep={() => setActiveStep(1)}
-                        goToNextStep={() => setActiveStep(3)}
+                        goToPreviousStep={() => dispatch(setActiveStep(1))}
+                        goToNextStep={() => dispatch(setActiveStep(3))}
                     />
                 </Animated.View>
 
@@ -167,8 +172,8 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                     display: activeStep == 3 ? 'flex' : 'none',
                 }}>
                     <DisplayCooling
-                        goToPreviousStep={() => setActiveStep(2)}
-                        goToNextStep={() => setActiveStep(4)}
+                        goToPreviousStep={() => dispatch(setActiveStep(2))}
+                        goToNextStep={() => dispatch(setActiveStep(4))}
                     />
                 </Animated.View>
 
@@ -178,7 +183,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                     display: activeStep == 4 ? 'flex' : 'none',
                 }}>
                     <AccessoriesSoftware
-                        goToPreviousStep={() => setActiveStep(3)}
+                        goToPreviousStep={() => dispatch(setActiveStep(3))}
                         goToNextStep={goToPreviewScreen}
                     />
                 </Animated.View>

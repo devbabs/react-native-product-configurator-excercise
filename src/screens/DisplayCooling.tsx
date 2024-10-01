@@ -5,6 +5,7 @@ import { ConfigurationStateInterface, setBaseModel, setCooling, setCpu, setDispl
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-native-paper'
 import { RootState } from '../core/store'
+import BackNext from '../components/BackNext'
 
 const DisplayCooling = ({
     goToPreviousStep,
@@ -14,7 +15,7 @@ const DisplayCooling = ({
     goToNextStep: () => void
 }) => {
     const dispatch = useDispatch()
-    const {display, cooling} = useSelector((state: RootState) => state.configuration)
+    const {display, cooling} = useSelector((state: RootState) => state.configuration.present)
     const displayOptions: ConfigurationStateInterface['display'][] = ['1080p 144Hz', '1440p 165Hz', '4K 60Hz']
     const coolingOptions: ConfigurationStateInterface['cooling'][] = ['Standard', 'Advanced', 'Liquid']
 
@@ -122,7 +123,7 @@ const DisplayCooling = ({
         <View
             style={styles.container}
         >
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, padding: 20}}>
                 <ScrollView
                     contentContainerStyle={{paddingBottom: 20}}
                     showsVerticalScrollIndicator={false}
@@ -132,25 +133,10 @@ const DisplayCooling = ({
                 </ScrollView>
             </View>
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}
-            >
-                <Button
-                    onPress={goToPreviousStep}
-                    mode={'outlined'}
-                >
-                    Back
-                </Button>
-                <Button
-                    onPress={nextPressed}
-                    mode={'contained'}
-                >
-                    Next
-                </Button>
-            </View>
+            <BackNext
+                goToPreviousStep={goToPreviousStep}
+                nextPressed={nextPressed}
+            />
         </View>
     )
 }
@@ -158,7 +144,7 @@ const DisplayCooling = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        // padding: 20
     },
     pageHeaderText: {
         fontSize: 20,
